@@ -1,67 +1,85 @@
-import React, { useRef, useState } from 'react';
-import './App.css';
-
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/firestore';
-import 'firebase/compat/auth';
-import 'firebase/compat/analytics';
-
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-
-firebase.initializeApp({
-    apiKey: "AIzaSyBtrdMM9IlwuJBvCdJ329a-QluuRVyq7Oo",
-  authDomain: "sponsor-the-homeless.firebaseapp.com",
-  projectId: "sponsor-the-homeless",
-  storageBucket: "sponsor-the-homeless.appspot.com",
-  messagingSenderId: "653136299983",
-  appId: "1:653136299983:web:9d43e992f43559a77734ba",
-  measurementId: "G-SWRYXX6K8N"
-})
-
-const auth = firebase.auth();
-const firestore = firebase.firestore();
-const analytics = firebase.analytics();
-
+import Home from "./pages/home/Home";
+import Login from "./pages/login/Login";
+import List from "./pages/list/List";
+import Single from "./pages/single/Single";
+import New from "./pages/new/New";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { productInputs, userInputs } from "./formSource";
+import { useContext } from "react";
+import { AuthContext } from "./context/AuthContext";
 
 function App() {
 
-  const [user] = useAuthState(auth);
+  const {currentUser} = useContext(AuthContext)
+
+  const RequireAuth = ({ children }) => {
+    return currentUser ? children : <Navigate to="/login" />;
+  };
 
   return (
-    <div className="App">
-      <header>
-        <SignOut />
-      </header>
-
-      <section>
-        {<SignIn />}
-      </section>
-
+    <div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/">
+            <Route index
+              element={
+                  <Home />
+              }
+            />
+            <Route path="login" element={<Login />} />
+            <Route path="users">
+              <Route
+                index
+                element={
+                    <List />
+                }
+              />
+              <Route
+                path=":userId"
+                element={
+                    <Single />
+                }
+              />
+              <Route
+                path="new"
+                element={
+                  <RequireAuth>
+                    <New inputs={userInputs} title="Add New Vendor" />
+                  </RequireAuth>
+                }
+              />
+            </Route>
+            <Route path="products">
+              <Route
+                index
+                element={
+                  <RequireAuth>
+                    <List />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path=":productId"
+                element={
+                  <RequireAuth>
+                    <Single />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="new"
+                element={
+                  <RequireAuth>
+                    <New inputs={productInputs} title="Add New Product" />
+                  </RequireAuth>
+                }
+              />
+            </Route>
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </div>
   );
-}
-
-function SignIn() {
-
-  const signInWithGoogle = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider);
-  }
-
-  return (
-    <>
-      <button className="sign-in" onClick={signInWithGoogle}>Sign in with Google</button>
-      <p>Do not violate the community guidelines or you will be banned for life!</p>
-    </>
-  )
-
-}
-
-function SignOut() {
-  return auth.currentUser && (
-    <button className="sign-out" onClick={() => auth.signOut()}>Sign Out</button>
-  )
 }
 
 export default App;
