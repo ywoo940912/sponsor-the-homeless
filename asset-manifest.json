@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/ywoo940912/sponsor-the-homeless/static/css/main.528223f5.css",
-    "main.js": "/ywoo940912/sponsor-the-homeless/static/js/main.47550fea.js",
-    "index.html": "/ywoo940912/sponsor-the-homeless/index.html",
-    "main.528223f5.css.map": "/ywoo940912/sponsor-the-homeless/static/css/main.528223f5.css.map",
-    "main.47550fea.js.map": "/ywoo940912/sponsor-the-homeless/static/js/main.47550fea.js.map"
+    "main.css": "/sponsor-the-homeless/static/css/main.528223f5.css",
+    "main.js": "/sponsor-the-homeless/static/js/main.aeff6eef.js",
+    "index.html": "/sponsor-the-homeless/index.html",
+    "main.528223f5.css.map": "/sponsor-the-homeless/static/css/main.528223f5.css.map",
+    "main.aeff6eef.js.map": "/sponsor-the-homeless/static/js/main.aeff6eef.js.map"
   },
   "entrypoints": [
     "static/css/main.528223f5.css",
-    "static/js/main.47550fea.js"
+    "static/js/main.aeff6eef.js"
   ]
 }
